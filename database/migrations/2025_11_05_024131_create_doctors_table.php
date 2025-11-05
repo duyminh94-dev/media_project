@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('specialty_id')->constrained()->onDelete('cascade');
-            $table->foreignId('city_id')->constrained()->onDelete('cascade');
-            $table->varchar('degree');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('specialty_id')->constrained('specialties')->onDelete('cascade');
+            $table->foreignId('city_id')->constrained('cities')->onDelete('cascade');
+            $table->string('degree');
             $table->text('bio');
-            $table->int('experience_years');
+            $table->integer('experience_years');
             $table->json('available_days');
             $table->timestamps();
         });

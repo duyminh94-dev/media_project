@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('contact_messages', function (Blueprint $table) {
             $table->id();
-            $table->varchar('name');
-            $table->varchar('email');
-            $table->varchar('phone');
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone');
             $table->text('message');
             $table->timestamps();
         });
