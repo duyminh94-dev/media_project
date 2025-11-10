@@ -15,6 +15,7 @@ class Patient extends Model
         'phone',
         'gender',
         'dob',
+        'medical_history',
     ];
 
     public function user() {

@@ -69,6 +69,17 @@
                         </span>
                     @enderror
                 </div>
+                {{-- medical_history  --}}
+                <div class="form-group">
+                    <label for="medical_history">Medical History</label>
+                    <textarea class="form-control @error('medical_history') is-invalid @enderror" name="medical_history" rows="4"
+                        placeholder="Enter medical history">{{ old('medical_history', $patients->medical_history) }}</textarea>
+                    @error('medical_history')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                     <button type="reset" class="btn btn-secondary">Cancel</button>

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone');
             $table->enum('gender', ['male', 'female']);
             $table->date('dob');
+            $table->text('medical_history');
             $table->timestamps();
         });
     }

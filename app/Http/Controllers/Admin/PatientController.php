@@ -40,11 +40,12 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'user_id' =>  'required|exists:users,id|unique:patients,user_id',
             'address' => 'required|string|min:5|max:255',
-            'phone' => 'required|string|digits:10',
+            'phone' => 'required|digits:10',
             'gender' => 'required|in:male,female',
             'dob' => 'required|date',
+            'medical_history' => 'required|text',
         ]);
 
         $patients = new Patient();
@@ -53,6 +54,7 @@ class PatientController extends Controller
         $patients->phone = $request->phone;
         $patients->gender = $request->gender;
         $patients->dob = $request->dob;
+        $patients->medical_history = $request->medical_history;
         $patients->save();
 
         return redirect()->route('admin.patients.index')->with('success', 'Patient created successfully');
@@ -76,8 +78,10 @@ class PatientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {   $users = User::where('role', 'patient')->get();
-        $patients = Patient::with('user')->findOrFail($id);
+     {   $users = User::where('role', 'patient')->get();
+
+         $patients = Patient::with('user')->where('id', $id)->firstOrFail($id);
+
         return view('admin.patients.edit', ['patients' => $patients, 'users' => $users]);
     }
 
@@ -91,11 +95,12 @@ class PatientController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'user_id' =>  'required|exists:users,id'.$id ,
+            'user_id' =>  'required|exists:users,id|unique:patients,user_id'.$id ,
             'address' => 'required|string|min:5|max:255',
-            'phone' => 'required|string|digits:10',
+            'phone' => 'required|digits:10',
             'gender' => 'required|in:male,female',
             'dob' => 'required|date',
+            'medical_history' => 'required|string',
         ]);
 
         $patients = Patient::findOrFail($id);
@@ -104,6 +109,7 @@ class PatientController extends Controller
         $patients->phone = $request->phone;
         $patients->gender = $request->gender;
         $patients->dob = $request->dob;
+        $patients->medical_history = $request->medical_history;
         $patients->save();
 
         return redirect()->route('admin.patients.index')->with('success', 'Patient updated successfully');

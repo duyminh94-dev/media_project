@@ -17,22 +17,24 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-striped- table-bordered table-hover table-checkable">
+            <table class="table table-striped table-responsive table-bordered table-hover table-checkable">
                 <thead>
                     <tr>
-                        <th>Avatar</th>
-                        <th>Full Name</th>
+                        <th width="5%">Avatar</th>
+                        <th width="20%">Full Name</th>
                         <th>Email</th>
-                        <th>Address</th>
+                        <th width="25%">Address</th>
                         <th>Phone</th>
                         <th>Gender</th>
                         <th>Dob</th>
+                        <th width="20%">Medical History</th>
+                        <th width="15%">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if ($patients->isEmpty())
                         <tr>
-                            <td colspan="7" class="text-center">No patients found.</td>
+                            <td colspan="9" class="text-center">No patients found.</td>
                         </tr>
                     @else
                         @forelse($patients as $patient)
@@ -50,9 +52,9 @@
                                 <td>{{ $patient->address ?? 'N/A' }}</td>
                                 <td>{{ $patient->phone ?? 'N/A' }}</td>
                                 <td>{{ $patient->gender ?? 'N/A' }}</td>
-                                <td>{{ $patient->dob ? \Carbon\Carbon::parse($patient->dob)->format('d-m-Y') : 'N/A' }}
-                                </td>
-                                <td>
+                                <td class="text-nowrap">{{ $patient->dob ? \Carbon\Carbon::parse($patient->dob)->format('d-m-Y') : 'N/A' }}</td>
+                                <td class="text-nowrap">{{ $patient->medical_history ?? 'N/A' }}</td>
+                                <td class="d-flex justify-content-end">
                                     <a href="{{ route('admin.patients.edit', $patient->id) }}" class="btn btn-success">Edit</a>
                                     <form action="{{ route('admin.patients.destroy', $patient->id) }}" class="d-inline" method="post" novalidate>
                                         @csrf
@@ -67,7 +69,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center">No patients found.</td>
+                                <td colspan="9" class="text-center">No patients found.</td>
                             </tr>
                         @endforelse
                     @endif
