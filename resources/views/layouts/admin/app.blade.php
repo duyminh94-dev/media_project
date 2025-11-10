@@ -210,6 +210,26 @@
                                     </a>
                                 </li>
                             @endauth --}}
+
+                            <li class="menu-item {{ Request::is('admin/users*') ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('admin.users.index') }}" class="menu-link">
+                                    <span class="svg-icon menu-icon">
+                                        <i class="flaticon2-user"></i>
+                                    </span>
+                                    <span class="menu-text">Users</span>
+                                </a>
+                            </li>
+
+                             <li class="menu-item {{ Request::is('admin/patients*') ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('admin.patients.index') }}" class="menu-link">
+                                    <span class="svg-icon menu-icon">
+                                        <i class="fa fas fa-head-side-cough"></i>
+                                    </span>
+                                    <span class="menu-text">Patients</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -228,8 +248,7 @@
                                     <ul
                                         class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                                         <li class="breadcrumb-item">
-                                            <a href="#"
-                                                class="text-muted">Dashboard</a>
+                                            <a href="#" class="text-muted">Dashboard</a>
                                         </li>
                                         @yield('breadcrumb')
                                     </ul>

@@ -41,15 +41,4 @@
             </div> --}}
         </div>
     </div>
-@else
-    <div class="topbar-item">
-        <a href="#" class="btn btn-light-primary font-weight-bold mr-2">
-            Login
-        </a>
-    </div>
-    <div class="topbar-item">
-        <a href="#" class="btn btn-primary font-weight-bold">
-            Register
-        </a>
-    </div>
 @endauth

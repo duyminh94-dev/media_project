@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\PatientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,5 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('admin')->name('admin.')->group(function () {
-   Route::resource('users', UserController::class);
+
+    // User
+    Route::resource('users', UserController::class);
+
+    // Patient
+    Route::resource('patients', PatientController::class);
 });
