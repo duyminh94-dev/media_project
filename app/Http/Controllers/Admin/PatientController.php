@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PatientController extends Controller
 {
@@ -27,7 +28,10 @@ class PatientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   $users = User::where('role', 'patient')->get();
+    {   $users = User::where('role', 'patient')
+        ->with('patient')
+        ->get();
+
         return view('admin.patients.create', compact('users'));
     }
 
@@ -40,13 +44,14 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' =>  'required|exists:users,id|unique:patients,user_id',
+            'user_id' => 'required|exists:users,id',
             'address' => 'required|string|min:5|max:255',
             'phone' => 'required|digits:10',
             'gender' => 'required|in:male,female',
             'dob' => 'required|date',
-            'medical_history' => 'required|text',
+            'medical_history' => 'required|string',
         ]);
+
 
         $patients = new Patient();
         $patients->user_id = $request->user_id;
@@ -80,7 +85,7 @@ class PatientController extends Controller
     public function edit($id)
      {   $users = User::where('role', 'patient')->get();
 
-         $patients = Patient::with('user')->where('id', $id)->firstOrFail($id);
+         $patients = Patient::with('user')->findOrFail($id);
 
         return view('admin.patients.edit', ['patients' => $patients, 'users' => $users]);
     }
@@ -95,7 +100,8 @@ class PatientController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'user_id' =>  'required|exists:users,id|unique:patients,user_id'.$id ,
+            // 'user_id' =>  'required|exists:users,id', Rule::exists('users', 'id'),
+            'user_id' => 'required|exists:users,id', $id,
             'address' => 'required|string|min:5|max:255',
             'phone' => 'required|digits:10',
             'gender' => 'required|in:male,female',

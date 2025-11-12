@@ -21,7 +21,7 @@
                 <thead>
                     <tr>
                         <th width="5%">Avatar</th>
-                        <th width="20%">Full Name</th>
+                        <th width="10%">Full Name</th>
                         <th>Email</th>
                         <th width="25%">Address</th>
                         <th>Phone</th>
@@ -49,11 +49,11 @@
                                 </td>
                                 <td>{{ $patient->user->name }}</td>
                                 <td>{{ $patient->user->email }}</td>
-                                <td>{{ $patient->address ?? 'N/A' }}</td>
+                                <td width="20%">{{ $patient->address ?? 'N/A' }}</td>
                                 <td>{{ $patient->phone ?? 'N/A' }}</td>
                                 <td>{{ $patient->gender ?? 'N/A' }}</td>
                                 <td class="text-nowrap">{{ $patient->dob ? \Carbon\Carbon::parse($patient->dob)->format('d-m-Y') : 'N/A' }}</td>
-                                <td class="text-nowrap">{{ $patient->medical_history ?? 'N/A' }}</td>
+                                <td>{{ $patient->medical_history ?? 'N/A' }}</td>
                                 <td class="d-flex justify-content-end">
                                     <a href="{{ route('admin.patients.edit', $patient->id) }}" class="btn btn-success">Edit</a>
                                     <form action="{{ route('admin.patients.destroy', $patient->id) }}" class="d-inline" method="post" novalidate>

@@ -221,6 +221,16 @@
                                 </a>
                             </li>
 
+                             <li class="menu-item {{ Request::is('admin/doctors*') ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="#" class="menu-link">
+                                    <span class="svg-icon menu-icon">
+                                        <i class="fas fa-user-md"></i>
+                                    </span>
+                                    <span class="menu-text">Doctors</span>
+                                </a>
+                            </li>
+
                              <li class="menu-item {{ Request::is('admin/patients*') ? 'menu-item-active' : '' }}"
                                 aria-haspopup="true">
                                 <a href="{{ route('admin.patients.index') }}" class="menu-link">
