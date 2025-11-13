@@ -25,6 +25,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Role</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -53,18 +54,66 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-success">View</a>
-                                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display: inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
-                                </form>
+                                <div class="d-flex align-items-center">
+                                    @if ($user->is_active)
+                                        <span class="label label-lg label-light-success label-inline mr-2">
+                                            <i class="flaticon2-check-mark"></i> Active
+                                        </span>
+                                    @else
+                                        <span class="label label-lg label-light-danger label-inline mr-2">
+                                            <i class="flaticon2-cross"></i> Deactivated
+                                        </span>
+                                    @endif
+
+                                    @if ($user->role !== 'admin')
+                                        @if ($user->is_active)
+                                            {{-- Nút Deactivate --}}
+                                            <form action="{{ route('admin.users.deactivate', $user->id) }}" method="POST" style="display: inline-block;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-icon btn-warning"
+                                                        onclick="return confirm('Bạn có chắc muốn vô hiệu hóa tài khoản {{ $user->name }}?')"
+                                                        title="Deactivate">
+                                                    <i class="flaticon2-lock"></i>
+                                                </button>
+                                            </form>
+                                        @else
+                                            {{-- Nút Reactivate --}}
+                                            <form action="{{ route('admin.users.reactivate', $user->id) }}" method="POST" style="display: inline-block;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-icon btn-success"
+                                                        title="Reactivate">
+                                                    <i class="flaticon2-unlock"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endif
+                                </div>
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-success" title="View">
+                                    <i class="flaticon-eye"></i>
+                                </a>
+                                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-primary" title="Edit">
+                                    <i class="flaticon2-edit"></i>
+                                </a>
+
+                                @if ($user->role !== 'admin')
+                                    {{-- Nút Delete --}}
+                                    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display: inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Are you sure you want to delete this user?')"
+                                                title="Delete">
+                                            <i class="flaticon2-trash"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center">No users found</td>
+                            <td colspan="6" class="text-center">No users found</td>
                         </tr>
                     @endforelse
                 </tbody>

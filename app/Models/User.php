@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'role',
         'avatar',
+        'is_active',
     ];
 
     /**
@@ -42,6 +43,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
 
     public function patient() {
@@ -54,5 +56,21 @@ class User extends Authenticatable
 
     public function articles() {
         return $this->hasMany(Article::class, 'author_id');
+    }
+
+    /**
+     * Scope query chỉ lấy user đang active
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    /**
+     * Scope query chỉ lấy user bị deactivate
+     */
+    public function scopeInactive($query)
+    {
+        return $query->where('is_active', false);
     }
 }

@@ -211,6 +211,11 @@
                                 </li>
                             @endauth --}}
 
+                            <li class="menu-section">
+                                <h4 class="menu-text">User Management</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+
                             <li class="menu-item {{ Request::is('admin/users*') ? 'menu-item-active' : '' }}"
                                 aria-haspopup="true">
                                 <a href="{{ route('admin.users.index') }}" class="menu-link">
@@ -221,7 +226,7 @@
                                 </a>
                             </li>
 
-                             <li class="menu-item {{ Request::is('admin/doctors*') ? 'menu-item-active' : '' }}"
+                            <li class="menu-item {{ Request::is('admin/doctors*') ? 'menu-item-active' : '' }}"
                                 aria-haspopup="true">
                                 <a href="#" class="menu-link">
                                     <span class="svg-icon menu-icon">
@@ -231,13 +236,53 @@
                                 </a>
                             </li>
 
-                             <li class="menu-item {{ Request::is('admin/patients*') ? 'menu-item-active' : '' }}"
+                            <li class="menu-item {{ Request::is('admin/patients*') ? 'menu-item-active' : '' }}"
                                 aria-haspopup="true">
                                 <a href="{{ route('admin.patients.index') }}" class="menu-link">
                                     <span class="svg-icon menu-icon">
-                                        <i class="fa fas fa-head-side-cough"></i>
+                                        <i class="flaticon2-user-outline-symbol"></i>
                                     </span>
                                     <span class="menu-text">Patients</span>
+                                </a>
+                            </li>
+
+                            <li class="menu-section">
+                                <h4 class="menu-text">Medical Management</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+
+                            <li class="menu-item {{ Request::is('admin/appointments*') ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('admin.appointments.index') }}" class="menu-link">
+                                    <span class="svg-icon menu-icon">
+                                        <i class="flaticon2-calendar-8"></i>
+                                    </span>
+                                    <span class="menu-text">Appointments</span>
+                                </a>
+                            </li>
+
+                            <li class="menu-section">
+                                <h4 class="menu-text">Settings</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+
+                            <li class="menu-item {{ Request::is('admin/cities*') ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('admin.cities.index') }}" class="menu-link">
+                                    <span class="svg-icon menu-icon">
+                                        <i class="flaticon2-location"></i>
+                                    </span>
+                                    <span class="menu-text">Cities</span>
+                                </a>
+                            </li>
+
+                            <li class="menu-item {{ Request::is('admin/specialties*') ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('admin.specialties.index') }}" class="menu-link">
+                                    <span class="svg-icon menu-icon">
+                                        <i class="flaticon2-list-3"></i>
+                                    </span>
+                                    <span class="menu-text">Specialties</span>
                                 </a>
                             </li>
                         </ul>

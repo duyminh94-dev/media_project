@@ -147,4 +147,49 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully');
     }
+
+    /**
+     * Deactivate a user account.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deactivate($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Không cho phép deactivate admin
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.users.index')->with('error', 'Không thể vô hiệu hóa tài khoản admin!');
+        }
+
+        // Kiểm tra user đã bị deactivate chưa
+        if (!$user->is_active) {
+            return redirect()->route('admin.users.index')->with('error', 'Tài khoản này đã bị vô hiệu hóa!');
+        }
+
+        $user->update(['is_active' => false]);
+
+        return redirect()->route('admin.users.index')->with('success', 'Tài khoản đã được vô hiệu hóa thành công!');
+    }
+
+    /**
+     * Reactivate a user account.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reactivate($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Kiểm tra user đã active chưa
+        if ($user->is_active) {
+            return redirect()->route('admin.users.index')->with('error', 'Tài khoản này đã được kích hoạt!');
+        }
+
+        $user->update(['is_active' => true]);
+
+        return redirect()->route('admin.users.index')->with('success', 'Tài khoản đã được kích hoạt lại thành công!');
+    }
 }

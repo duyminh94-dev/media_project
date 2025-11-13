@@ -17,62 +17,72 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-striped table-responsive table-bordered table-hover table-checkable">
+            <table class="table table-separate table-head-custom table-checkable">
                 <thead>
                     <tr>
-                        <th width="5%">Avatar</th>
-                        <th width="10%">Full Name</th>
-                        <th>Email</th>
-                        <th width="25%">Address</th>
-                        <th>Phone</th>
-                        <th>Gender</th>
-                        <th>Dob</th>
-                        <th width="20%">Medical History</th>
-                        <th width="15%">Actions</th>
+                        <th style="width: 80px;">Avatar</th>
+                        <th style="min-width: 150px;">Full Name</th>
+                        <th style="min-width: 180px;">Email</th>
+                        <th style="width: 120px;">Phone</th>
+                        <th style="width: 100px;">Gender</th>
+                        <th style="width: 120px;">DOB</th>
+                        <th style="min-width: 200px;">Medical History</th>
+                        <th style="width: 120px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($patients->isEmpty())
+                    @forelse($patients as $patient)
                         <tr>
-                            <td colspan="9" class="text-center">No patients found.</td>
+                            <td>
+                                @if ($patient->user->avatar)
+                                    <img src="{{ asset('avatars/' . $patient->user->avatar) }}" alt="{{ $patient->user->name }}"
+                                        style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+                                @else
+                                    <div class="symbol symbol-60 symbol-light-primary">
+                                        <span class="symbol-label font-size-h4 font-weight-bold">
+                                            {{ strtoupper(substr($patient->user->name, 0, 1)) }}
+                                        </span>
+                                    </div>
+                                @endif
+                            </td>
+                            <td>{{ $patient->user->name }}</td>
+                            <td>{{ $patient->user->email }}</td>
+                            <td>{{ $patient->phone ?? 'N/A' }}</td>
+                            <td>
+                                @if($patient->gender)
+                                    <span class="label label-inline label-light-{{ $patient->gender == 'male' ? 'primary' : ($patient->gender == 'female' ? 'danger' : 'info') }}">
+                                        {{ ucfirst($patient->gender) }}
+                                    </span>
+                                @else
+                                    <span class="text-muted">N/A</span>
+                                @endif
+                            </td>
+                            <td class="text-nowrap">
+                                {{ $patient->dob ? \Carbon\Carbon::parse($patient->dob)->format('d/m/Y') : 'N/A' }}
+                            </td>
+                            <td>
+                                <span class="text-muted">{{ $patient->medical_history ?? 'N/A' }}</span>
+                            </td>
+                            <td class="text-nowrap">
+                                <a href="{{ route('admin.patients.edit', $patient->id) }}" class="btn btn-sm btn-primary" title="Edit">
+                                    <i class="flaticon2-edit"></i>
+                                </a>
+                                <form action="{{ route('admin.patients.destroy', $patient->id) }}" class="d-inline" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete this patient?')"
+                                        title="Delete">
+                                        <i class="flaticon2-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
-                    @else
-                        @forelse($patients as $patient)
-                            <tr>
-                                <td>
-                                    @if ($patient->user->avatar)
-                                        <img src="{{ asset('avatars/' . $patient->user->avatar) }}" alt="{{ $patient->user->name }}"
-                                            style="width: 60px; height: 60px; object-fit: cover;">
-                                    @else
-                                        <span class="text-muted">No image</span>
-                                    @endif
-                                </td>
-                                <td>{{ $patient->user->name }}</td>
-                                <td>{{ $patient->user->email }}</td>
-                                <td width="20%">{{ $patient->address ?? 'N/A' }}</td>
-                                <td>{{ $patient->phone ?? 'N/A' }}</td>
-                                <td>{{ $patient->gender ?? 'N/A' }}</td>
-                                <td class="text-nowrap">{{ $patient->dob ? \Carbon\Carbon::parse($patient->dob)->format('d-m-Y') : 'N/A' }}</td>
-                                <td>{{ $patient->medical_history ?? 'N/A' }}</td>
-                                <td class="d-flex justify-content-end">
-                                    <a href="{{ route('admin.patients.edit', $patient->id) }}" class="btn btn-success">Edit</a>
-                                    <form action="{{ route('admin.patients.destroy', $patient->id) }}" class="d-inline" method="post" novalidate>
-                                        @csrf
-                                        @method('DELETE')
-                                        <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                        <button type="submit" class="btn btn-danger"
-                                            onclick="return confirm('Are you sure you want to delete this patient?')">
-                                            <i class="flaticon2-trash"></i>Delete
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="9" class="text-center">No patients found.</td>
-                            </tr>
-                        @endforelse
-                    @endif
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center">No patients found.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
