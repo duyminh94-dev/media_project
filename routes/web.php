@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PatientController as AdminPatientController;
+use App\Http\Controllers\Admin\ResetPasswordController;
 use App\Http\Auth\AuthController;
 use App\Http\Users\PatientController;
 use Illuminate\Support\Facades\Route;
@@ -81,6 +82,10 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('users', UserController::class);
         Route::post('users/{id}/deactivate', [UserController::class, 'deactivate'])->name('users.deactivate');
         Route::post('users/{id}/reactivate', [UserController::class, 'reactivate'])->name('users.reactivate');
+
+        // Reset Password
+        Route::get('reset-password', [ResetPasswordController::class, 'index'])->name('reset-password.index');
+        Route::post('reset-password/{id}', [ResetPasswordController::class, 'reset'])->name('reset-password.reset');
 
         // Patient Management
         Route::resource('patients', AdminPatientController::class);

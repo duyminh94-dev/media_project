@@ -18,6 +18,26 @@
             </div>
         </div>
         <div class="card-body">
+            {{-- Search Form --}}
+            <div class="mb-7">
+                <form action="{{ route('admin.users.index') }}" method="GET" class="form-inline">
+                    <div class="input-group input-group-solid" style="max-width: 400px;">
+                        <input type="text" class="form-control" name="search"
+                               placeholder="Search by name or email..."
+                               value="{{ request('search') }}">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="flaticon2-search-1"></i> Search
+                            </button>
+                        </div>
+                    </div>
+                    @if(request('search'))
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary ml-2">
+                            <i class="flaticon2-cross"></i> Clear
+                        </a>
+                    @endif
+                </form>
+            </div>
             <table class="table table-separate table-head-custom table-checkable">
                 <thead>
                     <tr>
@@ -35,7 +55,7 @@
                         <tr>
                             <td>
                                 @if ($user->avatar)
-                                    <img src="{{ asset('avatars/' . $user->avatar) }}" alt="{{ $user->name }}"
+                                    <img src="{{ asset($user->avatar) }}" alt="{{ $user->name }}"
                                         style="width: 60px; height: 60px; object-fit: cover;">
                                 @else
                                     <span class="text-muted">No image</span>
@@ -90,9 +110,6 @@
                                 </div>
                             </td>
                             <td>
-                                <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-success" title="View">
-                                    <i class="flaticon-eye"></i>
-                                </a>
                                 <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-primary" title="Edit">
                                     <i class="flaticon2-edit"></i>
                                 </a>
@@ -118,6 +135,9 @@
                     @endforelse
                 </tbody>
             </table>
+             <div class="d-flex justify-content-center mt-4">
+                {{ $users->links() }}
+            </div>
         </div>
     </div>
 @endsection

@@ -17,8 +17,17 @@ class PatientController extends Controller
      */
     public function index()
     {
-        // Lấy danh sách bệnh nhân model User và Patient
-        $patients = Patient::with('user')->get();
+        // search
+
+        $search = request()->get('search');
+
+        $patients = Patient::query()
+        ->when($search, function($query,$search){
+            return $query->where('name', 'like', "%{$search}%")
+                         ->orWhere('email', 'like', "%{$search}%");
+        })
+        ->paginate(15)
+        ->appends(['search' => $search]);
         return view('admin.patients.index', compact('patients'));
     }
 
@@ -47,9 +56,12 @@ class PatientController extends Controller
             'user_id' => 'required|exists:users,id',
             'address' => 'required|string|min:5|max:255',
             'phone' => 'required|digits:10',
+            'city' =>  'required|min:5|max:255',
+            'country' =>  'required|min:5|max:255',
             'gender' => 'required|in:male,female',
             'dob' => 'required|date',
-            'medical_history' => 'required|string',
+            'medical_history' => 'required',
+            'allergies' => 'required',
         ]);
 
 
@@ -57,9 +69,12 @@ class PatientController extends Controller
         $patients->user_id = $request->user_id;
         $patients->address = $request->address;
         $patients->phone = $request->phone;
+        $patients->city = $request->city;
+        $patients->country = $request->country;
         $patients->gender = $request->gender;
         $patients->dob = $request->dob;
         $patients->medical_history = $request->medical_history;
+        $patients->allergies = $request->allergies;
         $patients->save();
 
         return redirect()->route('admin.patients.index')->with('success', 'Patient created successfully');
@@ -104,18 +119,24 @@ class PatientController extends Controller
             'user_id' => 'required|exists:users,id', $id,
             'address' => 'required|string|min:5|max:255',
             'phone' => 'required|digits:10',
+            'city' =>  'required|min:5|max:255',
+            'country' =>  'required|min:5|max:255',
             'gender' => 'required|in:male,female',
             'dob' => 'required|date',
-            'medical_history' => 'required|string',
+            'medical_history' => 'required',
+            'allergies' => 'required',
         ]);
 
         $patients = Patient::findOrFail($id);
         $patients->user_id = $request->user_id;
         $patients->address = $request->address;
         $patients->phone = $request->phone;
+        $patients->city = $request->city;
+        $patients->country = $request->country;
         $patients->gender = $request->gender;
         $patients->dob = $request->dob;
         $patients->medical_history = $request->medical_history;
+        $patients->allergies = $request->allergies;
         $patients->save();
 
         return redirect()->route('admin.patients.index')->with('success', 'Patient updated successfully');

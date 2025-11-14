@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->time('appointment_time');
             $table->string('status');
             $table->text('notes');
+            $table->text('doctor_notes');
+            $table->text('cancelation_reason');
             $table->timestamps();
         });
     }

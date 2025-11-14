@@ -50,6 +50,28 @@
                         </span>
                     @enderror
                 </div>
+                {{-- city --}}
+                <div class="form-group">
+                    <label for="city">City <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control @error('city') is-invalid @enderror" name="city"
+                        value="{{ old('city') }}" placeholder="Enter city" required>
+                    @error('city')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                {{-- country --}}
+                <div class="form-group">
+                    <label for="country">Country <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control @error('country') is-invalid @enderror" name="country"
+                        value="{{ old('country') }}" placeholder="Enter country" required>
+                    @error('country')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
                 {{-- gender --}}
                 <div class="form-group">
                     <label for="gender">Gender</label>
@@ -75,6 +97,16 @@
                     <label for="medical_history">Medical History</label>
                     <textarea class="form-control @error('medical_history') is-invalid @enderror" name="medical_history" placeholder="Enter medical history">{{ old('medical_history') }}</textarea>
                     @error('medical_history')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                {{-- allergies --}}
+                <div class="form-group">
+                    <label for="allergies">Allergies</label>
+                    <textarea class="form-control @error('allergies') is-invalid @enderror" name="allergies" placeholder="Enter allergies">{{ old('allergies') }}</textarea>
+                    @error('allergies')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

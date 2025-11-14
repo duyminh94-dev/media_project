@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->date('date');
             $table->time('start_time');
             $table->time('end_time');
+            $table->integer('slot_duration');
+            $table->integer('max_appointments');
             $table->boolean('is_available')->default(true);
             $table->timestamps();
         });

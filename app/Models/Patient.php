@@ -13,9 +13,12 @@ class Patient extends Model
         'user_id',
         'address',
         'phone',
+        'city',
+        'country',
         'gender',
         'dob',
         'medical_history',
+        'allergies',
     ];
 
     public function user() {

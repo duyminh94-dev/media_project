@@ -210,9 +210,8 @@
                                     </a>
                                 </li>
                             @endauth --}}
-
                             <li class="menu-section">
-                                <h4 class="menu-text">User Management</h4>
+                                <h4 class="menu-text">Management System</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
 
@@ -261,8 +260,18 @@
                                 </a>
                             </li>
 
+                            <li class="menu-item {{ Request::is('admin/specialties*') ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('admin.specialties.index') }}" class="menu-link">
+                                    <span class="svg-icon menu-icon">
+                                        <i class="flaticon2-list-3"></i>
+                                    </span>
+                                    <span class="menu-text">Specialties</span>
+                                </a>
+                            </li>
+
                             <li class="menu-section">
-                                <h4 class="menu-text">Settings</h4>
+                                <h4 class="menu-text">Locations</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
 
@@ -276,13 +285,18 @@
                                 </a>
                             </li>
 
-                            <li class="menu-item {{ Request::is('admin/specialties*') ? 'menu-item-active' : '' }}"
+                             <li class="menu-section">
+                                <h4 class="menu-text">Settings</h4>
+                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                            </li>
+
+                            <li class="menu-item {{ Request::is('admin/reset-password*') ? 'menu-item-active' : '' }}"
                                 aria-haspopup="true">
-                                <a href="{{ route('admin.specialties.index') }}" class="menu-link">
+                                <a href="{{ route('admin.reset-password.index') }}" class="menu-link">
                                     <span class="svg-icon menu-icon">
-                                        <i class="flaticon2-list-3"></i>
+                                        <i class="flaticon2-lock"></i>
                                     </span>
-                                    <span class="menu-text">Specialties</span>
+                                    <span class="menu-text">Reset Password</span>
                                 </a>
                             </li>
                         </ul>

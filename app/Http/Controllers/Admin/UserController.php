@@ -13,11 +13,19 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        return view('admin.users.index', compact('users'));
+        $search = $request->get('search');
 
+        $users = User::query()
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', "%{$search}%")
+                           ->orWhere('email', 'like', "%{$search}%");
+            })
+            ->paginate(15)
+            ->appends(['search' => $search]);
+
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -58,7 +66,7 @@ class UserController extends Controller
             $avatar = $request->file('avatar');
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
             $avatar->move('avatars', $filename);
-            $user->avatar = $filename;
+            $user->avatar = 'avatars/' . $filename;
         }
 
         $user->save();
@@ -74,8 +82,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
-        return view('admin.users.show', compact('user'));
+        // $user = User::find($id);
+        // return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -115,7 +123,7 @@ class UserController extends Controller
             $avatar = $request->file('avatar');
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
             $avatar->move('avatars', $filename);
-            $user->avatar = $filename;
+            $user->avatar = 'avatars/' . $filename;
         }
 
         $user->save();
@@ -138,7 +146,7 @@ class UserController extends Controller
         }
 
         if ($user->avatar) {
-            $avatarPath = public_path('avatars/' . $user->avatar);
+            $avatarPath = public_path($user->avatar);
             if (file_exists($avatarPath)) {
                 unlink($avatarPath);
             }

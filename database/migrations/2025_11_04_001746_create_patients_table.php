@@ -18,9 +18,12 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('address');
             $table->string('phone');
+            $table->string('city');
+            $table->string('country');
             $table->enum('gender', ['male', 'female']);
             $table->date('dob');
             $table->text('medical_history');
+            $table->text('allergies');
             $table->timestamps();
         });
     }

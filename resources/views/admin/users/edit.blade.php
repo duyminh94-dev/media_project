@@ -64,7 +64,7 @@
                     <label for="avatar">Avatar <span class="text-danger">*</span></label>
                     @if ($user->avatar)
                         <div class="mb-3">
-                            <img src="{{ asset('avatars/' . $user->avatar) }}" alt="{{ $user->name }}"
+                            <img src="{{ asset($user->avatar) }}" alt="{{ $user->name }}"
                             style="width: 150px; height: 150px; object-fit: cover;" />
                             <p class="text-muted mt-2">Current Avatar</p>
                         </div>
