@@ -9,12 +9,12 @@ class Specialty extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'description',
-    ];
+    // specialties table by convention
+    protected $fillable = ['name', 'description'];
 
-    public function doctors() {
-        return $this->hasMany(Doctor::class);
+    // A specialty has many doctors
+    public function doctors()
+    {
+        return $this->hasMany(Doctor::class, 'specialty_id');
     }
 }

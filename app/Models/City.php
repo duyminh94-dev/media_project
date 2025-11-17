@@ -9,11 +9,12 @@ class City extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-    ];
+    // cities table by convention
+    protected $fillable = ['name'];
 
-    public function doctors() {
-        return $this->hasMany(Doctor::class);
+    // A city has many doctors
+    public function doctors()
+    {
+        return $this->hasMany(Doctor::class, 'city_id');
     }
 }
