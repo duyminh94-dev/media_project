@@ -15,6 +15,62 @@
     <link href="{{ asset('assets/css/themes/layout/brand/dark.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
     <title>@yield('title', 'Admin Medical')</title>
+
+    <style>
+        /* Toggle button styling for Available Days (Mon–Sun) */
+        .btn-check {
+            position: absolute;
+            clip: rect(0, 0, 0, 0);
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            white-space: nowrap;
+            border: 0;
+            padding: 0;
+        }
+
+        .btn-check+.btn {
+            border-radius: 12px;
+            padding: 8px 16px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Default (unchecked) state */
+        .btn-check:not(:checked)+.btn {
+            background-color: #fff;
+            color: #3699FF;
+            border-color: #3699FF;
+        }
+
+        /* Checked (active) state */
+        .btn-check:checked+.btn {
+            background-color: #3699FF;
+            /* theme primary */
+            color: #fff;
+            border-color: #3699FF;
+        }
+
+        /* Remove hover and focus effects completely */
+        .btn-check+.btn:hover,
+        .btn-check+.btn:focus,
+        .btn-check:not(:checked)+.btn:hover,
+        .btn-check:not(:checked)+.btn:focus,
+        .btn-check:checked+.btn:hover,
+        .btn-check:checked+.btn:focus {
+            background-color: inherit !important;
+            color: inherit !important;
+            border-color: inherit !important;
+            box-shadow: none !important;
+        }
+
+        /* Optional: remove focus outline entirely for clean UI */
+        .btn-check:focus+.btn,
+        .btn-check+.btn:focus {
+            box-shadow: none !important;
+        }
+    </style>
+
 </head>
 
 <body id="kt_body"
@@ -49,256 +105,104 @@
                 <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
                     <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1">
                         <ul class="menu-nav">
-                            {{-- @auth
-                                @if (Auth::user()->role == 'admin')
-                                    <!-- Admin Sidebar -->
-                                    <li class="menu-item {{ Request::is('admin/statistics*') ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('admin.statistics.index') }}" class="menu-link">
-                                            <span class="svg-icon menu-icon">
-                                                <i class="flaticon2-architecture-and-city"></i>
-                                            </span>
-                                            <span class="menu-text">Dashboard</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="menu-section">
-                                        <h4 class="menu-text">Management</h4>
-                                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                                    </li>
-
+                            @auth
+                                @if (auth()->user()->role == 'admin')
                                     <li class="menu-item {{ Request::is('admin/users*') ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
                                         <a href="{{ route('admin.users.index') }}" class="menu-link">
                                             <span class="svg-icon menu-icon">
-                                                <i class="flaticon2-user-outline-symbol"></i>
+                                                <i class="flaticon2-user"></i>
                                             </span>
                                             <span class="menu-text">Users</span>
                                         </a>
                                     </li>
 
-                                    <li class="menu-item {{ Request::is('admin/brands*') ? 'menu-item-active' : '' }}"
+                                    <li class="menu-item {{ Request::is('admin/doctors*') ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('admin.brands.index') }}" class="menu-link">
+                                        <a href="{{ route('admin.doctors.index') }}" class="menu-link">
                                             <span class="svg-icon menu-icon">
-                                                <i class="flaticon2-list-2"></i>
+                                                <i class="fas fa-user-md"></i>
                                             </span>
-                                            <span class="menu-text">Brands</span>
+                                            <span class="menu-text">Doctors</span>
                                         </a>
                                     </li>
 
-                                    <li class="menu-item {{ Request::is('admin/laptops*') ? 'menu-item-active' : '' }}"
+                                    <li class="menu-item {{ Request::is('admin/patients*') ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('admin.laptops.index') }}" class="menu-link">
+                                        <a href="{{ route('admin.patients.index') }}" class="menu-link">
                                             <span class="svg-icon menu-icon">
-                                                <i class="flaticon2-laptop"></i>
+                                                <i class="flaticon2-user-outline-symbol"></i>
                                             </span>
-                                            <span class="menu-text">Laptops</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="menu-item {{ Request::is('admin/orders*') ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('admin.orders.index') }}" class="menu-link">
-                                            <span class="svg-icon menu-icon">
-                                                <i class="flaticon2-shopping-cart-1"></i>
-                                            </span>
-                                            <span class="menu-text">Orders</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="menu-item {{ Request::is('admin/reviews*') ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('admin.reviews.index') }}" class="menu-link">
-                                            <span class="svg-icon menu-icon">
-                                                <i class="flaticon2-chat-1"></i>
-                                            </span>
-                                            <span class="menu-text">Reviews</span>
-                                        </a>
-                                    </li>
-                                @else
-                                    <!-- User Sidebar -->
-                                    <li class="menu-item {{ Request::is('dashboard') ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('dashboard') }}" class="menu-link">
-                                            <span class="svg-icon menu-icon">
-                                                <i class="flaticon2-architecture-and-city"></i>
-                                            </span>
-                                            <span class="menu-text">Dashboard</span>
+                                            <span class="menu-text">Patients</span>
                                         </a>
                                     </li>
 
                                     <li class="menu-section">
-                                        <h4 class="menu-text">Shopping</h4>
+                                        <h4 class="menu-text">Medical Management</h4>
                                         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                     </li>
 
-                                    <li class="menu-item {{ Request::is('user/laptops*') ? 'menu-item-active' : '' }}"
+                                    <li class="menu-item {{ Request::is('admin/appointments*') ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('user.laptops.index') }}" class="menu-link">
+                                        <a href="{{ route('admin.appointments.index') }}" class="menu-link">
                                             <span class="svg-icon menu-icon">
-                                                <i class="flaticon2-laptop"></i>
+                                                <i class="flaticon2-calendar-8"></i>
                                             </span>
-                                            <span class="menu-text">Laptops</span>
+                                            <span class="menu-text">Appointments</span>
                                         </a>
                                     </li>
 
-                                    <li class="menu-item {{ Request::is('user/cart*') ? 'menu-item-active' : '' }}"
+                                    <li class="menu-item {{ Request::is('admin/availabilities*') ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('user.cart.index') }}" class="menu-link">
+                                        <a href="{{ route('admin.availabilities.index') }}" class="menu-link">
                                             <span class="svg-icon menu-icon">
-                                                <i class="flaticon2-shopping-cart-1"></i>
+                                                <i class="flaticon2-calendar-3"></i>
                                             </span>
-                                            <span class="menu-text">Shopping Cart</span>
+                                            <span class="menu-text">Doctor Schedules</span>
                                         </a>
                                     </li>
 
-                                    <li class="menu-item {{ Request::is('user/orders*') || Request::is('user/checkout*') ? 'menu-item-active' : '' }}"
+                                    <li class="menu-item {{ Request::is('admin/specialties*') ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('user.orders.index') }}" class="menu-link">
+                                        <a href="{{ route('admin.specialties.index') }}" class="menu-link">
                                             <span class="svg-icon menu-icon">
-                                                <i class="flaticon2-box-1"></i>
+                                                <i class="flaticon2-list-3"></i>
                                             </span>
-                                            <span class="menu-text">My Orders</span>
-                                        </a>
-                                    </li>
-
-                                    <li class="menu-item {{ Request::is('user/reviews*') ? 'menu-item-active' : '' }}"
-                                        aria-haspopup="true">
-                                        <a href="{{ route('user.reviews.index') }}" class="menu-link">
-                                            <span class="svg-icon menu-icon">
-                                                <i class="flaticon2-chat-1"></i>
-                                            </span>
-                                            <span class="menu-text">My Reviews</span>
+                                            <span class="menu-text">Specialties</span>
                                         </a>
                                     </li>
 
                                     <li class="menu-section">
-                                        <h4 class="menu-text">Account</h4>
+                                        <h4 class="menu-text">Locations</h4>
                                         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                     </li>
 
-                                    <li class="menu-item {{ Request::is('user/profile*') ? 'menu-item-active' : '' }}"
+                                    <li class="menu-item {{ Request::is('admin/cities*') ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('user.profile') }}" class="menu-link">
+                                        <a href="{{ route('admin.cities.index') }}" class="menu-link">
                                             <span class="svg-icon menu-icon">
-                                                <i class="flaticon2-user"></i>
+                                                <i class="flaticon2-location"></i>
                                             </span>
-                                            <span class="menu-text">My Profile</span>
+                                            <span class="menu-text">Cities</span>
                                         </a>
                                     </li>
 
-                                    <li class="menu-item {{ Request::is('user/change-password*') ? 'menu-item-active' : '' }}"
+                                    <li class="menu-section">
+                                        <h4 class="menu-text">Settings</h4>
+                                        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                                    </li>
+
+                                    <li class="menu-item {{ Request::is('admin/reset-password*') ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('user.change-password') }}" class="menu-link">
+                                        <a href="{{ route('admin.reset-password.index') }}" class="menu-link">
                                             <span class="svg-icon menu-icon">
-                                                <i class="flaticon-lock"></i>
+                                                <i class="flaticon2-lock"></i>
                                             </span>
-                                            <span class="menu-text">Change Password</span>
+                                            <span class="menu-text">Reset Password</span>
                                         </a>
                                     </li>
                                 @endif
-                            @else
-                                <!-- Guest Sidebar -->
-                                <li class="menu-item {{ Request::is('/') ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="/" class="menu-link">
-                                        <span class="svg-icon menu-icon">
-                                            <i class="flaticon2-architecture-and-city"></i>
-                                        </span>
-                                        <span class="menu-text">Home</span>
-                                    </a>
-                                </li>
-                            @endauth --}}
-                            <li class="menu-section">
-                                <h4 class="menu-text">Management System</h4>
-                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                            </li>
-
-                            <li class="menu-item {{ Request::is('admin/users*') ? 'menu-item-active' : '' }}"
-                                aria-haspopup="true">
-                                <a href="{{ route('admin.users.index') }}" class="menu-link">
-                                    <span class="svg-icon menu-icon">
-                                        <i class="flaticon2-user"></i>
-                                    </span>
-                                    <span class="menu-text">Users</span>
-                                </a>
-                            </li>
-
-                            <li class="menu-item {{ Request::is('admin/doctors*') ? 'menu-item-active' : '' }}"
-                                aria-haspopup="true">
-                                <a href="#" class="menu-link">
-                                    <span class="svg-icon menu-icon">
-                                        <i class="fas fa-user-md"></i>
-                                    </span>
-                                    <span class="menu-text">Doctors</span>
-                                </a>
-                            </li>
-
-                            <li class="menu-item {{ Request::is('admin/patients*') ? 'menu-item-active' : '' }}"
-                                aria-haspopup="true">
-                                <a href="{{ route('admin.patients.index') }}" class="menu-link">
-                                    <span class="svg-icon menu-icon">
-                                        <i class="flaticon2-user-outline-symbol"></i>
-                                    </span>
-                                    <span class="menu-text">Patients</span>
-                                </a>
-                            </li>
-
-                            <li class="menu-section">
-                                <h4 class="menu-text">Medical Management</h4>
-                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                            </li>
-
-                            <li class="menu-item {{ Request::is('admin/appointments*') ? 'menu-item-active' : '' }}"
-                                aria-haspopup="true">
-                                <a href="{{ route('admin.appointments.index') }}" class="menu-link">
-                                    <span class="svg-icon menu-icon">
-                                        <i class="flaticon2-calendar-8"></i>
-                                    </span>
-                                    <span class="menu-text">Appointments</span>
-                                </a>
-                            </li>
-
-                            <li class="menu-item {{ Request::is('admin/specialties*') ? 'menu-item-active' : '' }}"
-                                aria-haspopup="true">
-                                <a href="{{ route('admin.specialties.index') }}" class="menu-link">
-                                    <span class="svg-icon menu-icon">
-                                        <i class="flaticon2-list-3"></i>
-                                    </span>
-                                    <span class="menu-text">Specialties</span>
-                                </a>
-                            </li>
-
-                            <li class="menu-section">
-                                <h4 class="menu-text">Locations</h4>
-                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                            </li>
-
-                            <li class="menu-item {{ Request::is('admin/cities*') ? 'menu-item-active' : '' }}"
-                                aria-haspopup="true">
-                                <a href="{{ route('admin.cities.index') }}" class="menu-link">
-                                    <span class="svg-icon menu-icon">
-                                        <i class="flaticon2-location"></i>
-                                    </span>
-                                    <span class="menu-text">Cities</span>
-                                </a>
-                            </li>
-
-                             <li class="menu-section">
-                                <h4 class="menu-text">Settings</h4>
-                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                            </li>
-
-                            <li class="menu-item {{ Request::is('admin/reset-password*') ? 'menu-item-active' : '' }}"
-                                aria-haspopup="true">
-                                <a href="{{ route('admin.reset-password.index') }}" class="menu-link">
-                                    <span class="svg-icon menu-icon">
-                                        <i class="flaticon2-lock"></i>
-                                    </span>
-                                    <span class="menu-text">Reset Password</span>
-                                </a>
-                            </li>
+                            @endauth
                         </ul>
                     </div>
                 </div>
@@ -329,12 +233,33 @@
                     <div class="d-flex flex-column-fluid">
                         <div class="container-fluid">
                             @if (session('success'))
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <div id="flash-success" class="alert alert-success mx-4 mt-3">
                                     {{ session('success') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
                                 </div>
+                            @endif
+
+                            @if (session('success'))
+                                <script>
+                                    (function() {
+                                        var el = document.getElementById('flash-success');
+                                        if (!el) return;
+
+                                        var timeoutMs = 3000;
+                                        setTimeout(function() {
+                                            if (typeof bootstrap !== 'undefined' && bootstrap.Alert) {
+                                                try {
+                                                    (new bootstrap.Alert(el)).close();
+                                                    return;
+                                                } catch (e) {}
+                                            }
+                                            el.style.transition = 'opacity .4s ease';
+                                            el.style.opacity = '0';
+                                            setTimeout(function() {
+                                                if (el && el.parentNode) el.parentNode.removeChild(el);
+                                            }, 400);
+                                        }, timeoutMs);
+                                    })();
+                                </script>
                             @endif
 
                             @if (session('error'))

@@ -6,6 +6,22 @@ use App\Http\Controllers\Admin\ResetPasswordController;
 use App\Http\Auth\AuthController;
 use App\Http\Users\PatientController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DoctorController;
+use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\SpecialtyController;
+use App\Http\Controllers\Admin\DoctorAvailabilityController;
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('specialties', SpecialtyController::class)->except(['show']);
+
+    // already existing
+    // Route::resource('cities', CityController::class);
+    // Route::resource('doctors', DoctorController::class);
+    // Route::resource('patients', PatientController::class);
+    // Route::resource('users', UserController::class);
+});
+
+use PhpParser\Comment\Doc;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,19 +106,28 @@ Route::middleware(['auth'])->group(function() {
         // Patient Management
         Route::resource('patients', AdminPatientController::class);
 
-        // Appointments Management (placeholder)
-        Route::get('appointments', function () {
-            return 'Appointments Management - Coming Soon';
-        })->name('appointments.index');
+        // Doctor Management
+        Route::resource('doctors', DoctorController::class);
+
+        // Doctor Availability Management
+        Route::resource('availabilities', DoctorAvailabilityController::class);
+
+        // Custom availability routes
+        Route::get('availabilities/doctor/{doctorId}', [DoctorAvailabilityController::class, 'byDoctor'])->name('availabilities.byDoctor');
+        Route::get('availabilities/date', [DoctorAvailabilityController::class, 'byDate'])->name('availabilities.byDate');
+        Route::post('availabilities/{id}/toggle', [DoctorAvailabilityController::class, 'toggleAvailable'])->name('availabilities.toggle');
+
+        // Appointments Management
+        Route::get('appointments', [App\Http\Controllers\Admin\AppointmentController::class, 'index'])->name('appointments.index');
+        Route::get('appointments/{id}', [App\Http\Controllers\Admin\AppointmentController::class, 'show'])->name('appointments.show');
+        Route::post('appointments/{id}/cancel', [App\Http\Controllers\Admin\AppointmentController::class, 'cancel'])->name('appointments.cancel');
+        Route::post('appointments/{id}/update-status', [App\Http\Controllers\Admin\AppointmentController::class, 'updateStatus'])->name('appointments.updateStatus');
+        Route::post('appointments/{id}/doctor-notes', [App\Http\Controllers\Admin\AppointmentController::class, 'addDoctorNotes'])->name('appointments.addDoctorNotes');
 
         // Cities Management (placeholder)
-        Route::get('cities', function () {
-            return 'Cities Management - Coming Soon';
-        })->name('cities.index');
+        Route::resource('cities', CityController::class);
 
         // Specialties Management (placeholder)
-        Route::get('specialties', function () {
-            return 'Specialties Management - Coming Soon';
-        })->name('specialties.index');
+        Route::resource('specialties', SpecialtyController::class);
     });
 });

@@ -23,7 +23,6 @@ class AuthController extends Controller
     public function loginPost(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        $role = $request->input('role');
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
@@ -34,12 +33,7 @@ class AuthController extends Controller
                 return back()->with('error', 'Tài khoản của bạn đã bị vô hiệu hóa. Vui lòng liên hệ quản trị viên!');
             }
 
-            if ($user->role !== $role) {
-                Auth::logout();
-                return back()->with('error', 'Vai trò không khớp với tài khoản!');
-            }
-
-            // Điều hướng theo vai trò
+            // Điều hướng theo vai trò từ database
             return match ($user->role) {
                 'admin'  => redirect()->route('admin.users.index'),
                 'doctor' => redirect()->route('doctors.dashboard'),

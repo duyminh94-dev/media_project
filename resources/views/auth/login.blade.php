@@ -40,25 +40,15 @@
             {{-- PASSWORD --}}
             <div class="form-group">
                 <label>Mật khẩu:</label>
-                <input 
-                    type="password" 
-                    name="password" 
-                    class="form-control @error('password') is-invalid @enderror" 
+                <input
+                    type="password"
+                    name="password"
+                    class="form-control @error('password') is-invalid @enderror"
                     placeholder="Nhập mật khẩu"
                 >
                 @error('password')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
-            </div>
-
-            {{-- ROLE --}}
-            <div class="form-group mt-2">
-                <label>Chọn vai trò:</label>
-                <select name="role" class="form-control">
-                    <option value="patient">patient</option>
-                    <option value="doctor">doctor</option>
-                    <option value="admin">Quản trị viên</option>
-                </select>
             </div>
 
             <button type="submit" class="btn btn-primary w-100 mt-3">Đăng nhập</button>
